@@ -1,0 +1,7 @@
+include:
+  - infrastructure/compose.rabbitmq.yml
+  - services/notification-service/compose.yml
+
+networks:
+  microservices-lab-net:
+    driver: bridge

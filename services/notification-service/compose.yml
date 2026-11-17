@@ -1,0 +1,53 @@
+services:
+  notification-service:
+    build: .
+    restart: always
+    volumes:
+      - .:/notification-service
+    working_dir: /notification-service
+    environment:
+      - PYTHONPATH=src
+      - NOTIFICATION_DB_NAME=${NOTIFICATION_DB_NAME}
+      - NOTIFICATION_DB_HOST=${NOTIFICATION_DB_HOST}
+      - NOTIFICATION_DB_PORT=${NOTIFICATION_DB_PORT}
+      - NOTIFICATION_DB_PASSWORD=${NOTIFICATION_DB_PASSWORD}
+      - NOTIFICATION_DB_USER=${NOTIFICATION_DB_USER}
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+    # command: sh -c "alembic upgrade head && uvicorn notification.main:create_app --factory --host ${APP_HOST} --port ${APP_PORT} --reload"
+    command: sh -c "uvicorn notification.main:create_app --factory --host 0.0.0.0 --port 8001 --reload"
+    ports:
+      - "8001:8001"
+    depends_on:
+      notification-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-lab-net
+
+
+  notification-db:
+#    env_file: .env
+    image: postgres:17-alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=${NOTIFICATION_DB_NAME}
+      - POSTGRES_USER=${NOTIFICATION_DB_USER}
+      - POSTGRES_PASSWORD=${NOTIFICATION_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${NOTIFICATION_DB_USER} -d ${NOTIFICATION_DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices-lab-net
+    restart: always
+
+volumes:
+  postgres-data:
