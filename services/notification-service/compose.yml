@@ -3,8 +3,8 @@ services:
     build: .
     restart: always
     volumes:
-      - .:/notification-service
-    working_dir: /notification-service
+      - .:/notification_service
+    working_dir: /notification_service
     environment:
       - PYTHONPATH=src
       - NOTIFICATION_DB_NAME=${NOTIFICATION_DB_NAME}
@@ -22,7 +22,7 @@ services:
       - NOTIFICATION_ALCHEMY_POOL_SIZE=${NOTIFICATION_ALCHEMY_POOL_SIZE}
       - NOTIFICATION_ALCHEMY_AUTOFLUSH=${NOTIFICATION_ALCHEMY_AUTOFLUSH}
       - NOTIFICATION_ALCHEMY_EXPIRE_ON_COMMIT=${NOTIFICATION_ALCHEMY_EXPIRE_ON_COMMIT}
-    command: sh -c "alembic upgrade head && uvicorn notification.main:create_app --factory --host 0.0.0.0 --port 8001 --reload"
+    command: sh -c "alembic upgrade head && uvicorn notification_service.main:create_app --factory --host 0.0.0.0 --port 8001 --reload"
     ports:
       - "8001:8001"
     depends_on:
