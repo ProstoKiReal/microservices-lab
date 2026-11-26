@@ -21,7 +21,8 @@
 - **FastStream**
 - **FastStream Outbox**
 - **Dishka**
-- **Postgresql**
+- **PostgreSQL**
+- **PGbouncer**
 - **Kafka**
 - **SqlAlchemy**
 - **Alembic**
@@ -29,3 +30,9 @@
 - **Prometheus**
 - **Grafana**
 - **Loki**
+
+## Запуск
+
+```bash
+make up
+```
