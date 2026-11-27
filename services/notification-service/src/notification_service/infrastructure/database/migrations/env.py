@@ -9,7 +9,8 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from notification_service.setup.config import config as cfg
 from notification_service.infrastructure.database.models.registry import mapper_registry
 
-import notification_service.infrastructure.database.models.settings  # noqa: F401  # registers tables in metadata
+import notification_service.infrastructure.database.models.settings
+import notification_service.infrastructure.database.models.inbox
 
 
 config = context.config

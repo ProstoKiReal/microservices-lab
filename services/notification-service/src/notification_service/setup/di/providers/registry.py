@@ -3,6 +3,7 @@ from typing import Iterable
 from dishka import Provider
 
 from notification_service.setup.di.providers import (
+    DBEngineProvider,
     DBSessionProvider,
     RepositoryProvider,
     TXMangerProvider,
@@ -14,6 +15,7 @@ from notification_service.setup.di.providers import (
 
 def get_providers() -> Iterable[Provider]:
     return [
+    DBEngineProvider(),
     DBSessionProvider(),
     RepositoryProvider(),
     TXMangerProvider(),

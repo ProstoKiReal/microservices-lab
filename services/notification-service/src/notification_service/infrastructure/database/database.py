@@ -1,14 +1,25 @@
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-
-from notification_service.setup.config import config
-
-
-engine = create_async_engine(
-    url=config.db.URL,
-    pool_size=config.alchemy.POOL_SIZE,
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine as sa_create_async_engine,
 )
-async_session = async_sessionmaker(
-    engine,
-    expire_on_commit=config.alchemy.EXPIRE_ON_COMMIT,
-    autoflush=config.alchemy.AUTOFLUSH,
-)
+
+
+def create_async_engine(url: str, pool_size: int) -> AsyncEngine:
+    return sa_create_async_engine(
+        url=url,
+        pool_size=pool_size,
+    )
+
+
+def create_async_sessionmaker(
+    engine: AsyncEngine,
+    expire_on_commit: bool,
+    autoflush: bool,
+) -> async_sessionmaker[AsyncSession]:
+    return async_sessionmaker(
+        engine,
+        expire_on_commit=expire_on_commit,
+        autoflush=autoflush,
+    )
