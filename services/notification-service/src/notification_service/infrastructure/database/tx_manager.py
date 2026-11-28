@@ -10,6 +10,8 @@ class AlchemyTxManager(TxManager):
         self.session = session
 
     async def __aenter__(self) -> Self:
+        if not self.session.in_transaction():
+            await self.session.begin().start()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:

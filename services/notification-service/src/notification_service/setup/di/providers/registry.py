@@ -5,6 +5,7 @@ from dishka import Provider
 from notification_service.setup.di.providers import (
     DBEngineProvider,
     DBSessionProvider,
+    InboxProvider,
     RepositoryProvider,
     TXMangerProvider,
     BrokerAuthProvider,
@@ -17,6 +18,7 @@ def get_providers() -> Iterable[Provider]:
     return [
     DBEngineProvider(),
     DBSessionProvider(),
+    InboxProvider(),
     RepositoryProvider(),
     TXMangerProvider(),
     BrokerAuthProvider(),
